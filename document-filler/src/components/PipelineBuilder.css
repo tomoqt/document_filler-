@@ -1,0 +1,622 @@
+:root {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --border-color: #dfe1e5;
+  --accent-color: #1a73e8;
+  --accent-hover: #1557b0;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --danger-color: #d93025;
+  --node-bg: #ffffff;
+  --node-border: transparent;
+  --port-border: #1a73e8;
+  --edge-color: #1a73e8;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #202124;
+  --bg-secondary: #2d2e31;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --border-color: #3c4043;
+  --accent-color: #8ab4f8;
+  --accent-hover: #aecbfa;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --danger-color: #f28b82;
+  --node-bg: #2d2e31;
+  --node-border: #3c4043;
+  --port-border: #8ab4f8;
+  --edge-color: #8ab4f8;
+}
+
+.pipeline-builder {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  background: var(--bg-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-primary);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow-color);
+  margin-bottom: 20px;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.add-node-button {
+  padding: 10px 16px;
+  background-color: #fff;
+  color: #1a73e8;
+  border: 1px solid #1a73e8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.add-node-button:hover {
+  background-color: #f4f8fe;
+  transform: translateY(-1px);
+}
+
+.save-button {
+  padding: 10px 16px;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.save-button:hover {
+  background-color: #1557b0;
+  transform: translateY(-1px);
+}
+
+.load-select {
+  padding: 10px 16px;
+  border: 1px solid #dfe1e5;
+  border-radius: 8px;
+  font-size: 0.9em;
+  background-color: white;
+  cursor: pointer;
+  min-width: 150px;
+  color: #5f6368;
+  transition: all 0.2s ease;
+}
+
+.load-select:hover {
+  border-color: #1a73e8;
+}
+
+.clear-button {
+  padding: 10px 16px;
+  background-color: #fff;
+  color: #d93025;
+  border: 1px solid #d93025;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  background-color: #fce8e6;
+  transform: translateY(-1px);
+}
+
+.canvas {
+  flex: 1;
+  position: relative;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow-color);
+  margin: 20px 0;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.node {
+  position: absolute;
+  width: 280px;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  z-index: 2;
+}
+
+.node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.node-title {
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.node-content {
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: 8px;
+}
+
+.node-inputs,
+.node-outputs {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  position: relative;
+  margin: 8px 0;
+}
+
+.port-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 4px;
+}
+
+.port {
+  width: 12px;
+  height: 12px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--port-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 3;
+}
+
+.port:hover {
+  background: var(--accent-color);
+  transform: scale(1.2);
+}
+
+.edge {
+  stroke: var(--edge-color);
+  stroke-width: 2px;
+  fill: none;
+  pointer-events: stroke;
+  transition: stroke-width 0.2s ease;
+  filter: drop-shadow(0 1px 2px var(--shadow-color));
+}
+
+.edge:hover {
+  stroke-width: 3px;
+}
+
+.edge-dragging {
+  stroke: var(--text-secondary);
+  stroke-dasharray: 5,5;
+}
+
+.execute-button {
+  padding: 14px 28px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+}
+
+.execute-button:hover {
+  background: #1557b0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26,115,232,0.4);
+}
+
+.node-content-wrapper {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.output-content {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.output-text {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.placeholder-text {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.node-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.node-textarea:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+.node-select {
+  width: 100%;
+  padding: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.node-select:focus {
+  outline: none;
+  border-color: #1a73e8;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-color-alpha);
+}
+
+.save-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.save-dialog {
+  background: var(--bg-secondary);
+  padding: 24px;
+  border-radius: 16px;
+  width: 400px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  color: var(--text-primary);
+}
+
+.save-dialog h3 {
+  margin: 0 0 16px 0;
+  color: #202124;
+  font-size: 1.2em;
+}
+
+.save-dialog input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 20px;
+  border: 1px solid #dfe1e5;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.save-dialog input:focus {
+  outline: none;
+  border-color: #1a73e8;
+}
+
+.save-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.save-dialog-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.save-dialog-buttons button:first-child {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.save-dialog-buttons button:first-child:hover {
+  background-color: #1557b0;
+}
+
+.save-dialog-buttons button:last-child {
+  background-color: white;
+  color: #5f6368;
+  border: 1px solid #dfe1e5;
+}
+
+.save-dialog-buttons button:last-child:hover {
+  background-color: #f8f9fa;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Add theme toggle button */
+.theme-toggle {
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-primary);
+  transform: rotate(360deg);
+}
+
+/* Improve node layouts */
+.node {
+  background: var(--node-bg);
+  border-color: var(--node-border);
+}
+
+.node-content {
+  background: var(--bg-primary);
+}
+
+.node-label {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.node-inputs,
+.node-outputs {
+  position: relative;
+  padding: 8px 0;
+}
+
+.port-label {
+  position: absolute;
+  font-size: 0.7em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.input-port .port-label {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.output-port .port-label {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Modern select styling */
+.node-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 1em;
+  padding-right: 32px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.node-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-color-alpha);
+}
+
+/* Edge styling */
+.edge {
+  stroke: var(--edge-color);
+}
+
+.edge-dragging {
+  stroke: var(--text-secondary);
+}
+
+/* Port styling */
+.port {
+  border-color: var(--port-border);
+}
+
+.port:hover {
+  background: var(--accent-color);
+}
+
+/* Dialog dark mode */
+.save-dialog {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.save-dialog input {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Add spacing between node elements */
+.node-content > * + * {
+  margin-top: 12px;
+}
+
+/* File input styling */
+.file-input-wrapper {
+  width: 100%;
+  padding: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.file-input-button {
+  padding: 8px 16px;
+  background: var(--accent-color);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  word-break: break-all;
+  margin-top: 4px;
+}
+
+/* Custom scrollbar for dark mode */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Make sure node colors are properly applied */
+.node[data-type="DOCUMENT_INPUT"] {
+  background: var(--bg-secondary);
+  border-color: #1a73e8;
+}
+
+.node[data-type="TEXT_INPUT"] {
+  background: var(--bg-secondary);
+  border-color: #34a853;
+}
+
+.node[data-type="GPT_MODEL"] {
+  background: var(--bg-secondary);
+  border-color: #ea4335;
+}
+
+.node[data-type="DOCUMENT_OUTPUT"] {
+  background: var(--bg-secondary);
+  border-color: #fbbc04;
+}
+
+.edges-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.edge {
+  stroke: var(--edge-color);
+  stroke-width: 2px;
+  fill: none;
+  pointer-events: stroke;
+  transition: stroke-width 0.2s ease;
+  filter: drop-shadow(0 1px 2px var(--shadow-color));
+}
+
+.edge:hover {
+  stroke-width: 3px;
+}
+
+.edge-dragging {
+  stroke: var(--text-secondary);
+  stroke-dasharray: 5,5;
+}
