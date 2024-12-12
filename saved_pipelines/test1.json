@@ -1,0 +1,105 @@
+{
+  "name": "test1",
+  "nodes": [
+    {
+      "id": "DOCUMENT_INPUT-1733915243116",
+      "type": "DOCUMENT_INPUT",
+      "title": "Document Input",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "color": "#e3f2fd",
+      "inputs": [],
+      "outputs": [
+        "document"
+      ],
+      "data": {
+        "file": {}
+      },
+      "width": 200,
+      "height": 100
+    },
+    {
+      "id": "TEXT_INPUT-1733915243884",
+      "type": "TEXT_INPUT",
+      "title": "Text Input",
+      "position": {
+        "x": 87,
+        "y": 355
+      },
+      "color": "#e8eaf6",
+      "inputs": [],
+      "outputs": [
+        "text"
+      ],
+      "data": {
+        "text": "francesco pappone"
+      },
+      "width": 200,
+      "height": 100
+    },
+    {
+      "id": "GPT_MODEL-1733915247420",
+      "type": "GPT_MODEL",
+      "title": "GPT Model",
+      "position": {
+        "x": 485,
+        "y": 237
+      },
+      "color": "#f3e5f5",
+      "inputs": [
+        "document",
+        "context"
+      ],
+      "outputs": [
+        "filled_document"
+      ],
+      "data": {
+        "model": "gpt-4o-mini"
+      },
+      "width": 200,
+      "height": 100
+    },
+    {
+      "id": "DOCUMENT_OUTPUT-1733915550645",
+      "type": "DOCUMENT_OUTPUT",
+      "title": "Document Output",
+      "position": {
+        "x": 548,
+        "y": 466
+      },
+      "color": "#fce4ec",
+      "inputs": [
+        "document"
+      ],
+      "outputs": [],
+      "data": {},
+      "width": 200,
+      "height": 100
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1733915547415",
+      "sourceId": "DOCUMENT_INPUT-1733915243116",
+      "targetId": "GPT_MODEL-1733915247420",
+      "sourceOutput": "document",
+      "targetInput": "document"
+    },
+    {
+      "id": "edge-1733915549523",
+      "sourceId": "TEXT_INPUT-1733915243884",
+      "targetId": "GPT_MODEL-1733915247420",
+      "sourceOutput": "text",
+      "targetInput": "context"
+    },
+    {
+      "id": "edge-1733915554199",
+      "sourceId": "GPT_MODEL-1733915247420",
+      "targetId": "DOCUMENT_OUTPUT-1733915550645",
+      "sourceOutput": "filled_document",
+      "targetInput": "document"
+    }
+  ]
+}
